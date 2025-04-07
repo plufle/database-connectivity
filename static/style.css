@@ -7,7 +7,7 @@ body {
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -121,6 +121,11 @@ body {
 
 .table button {
   margin-right: 5px;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 11px;
+  color: #fff;
+  font-size: 1rem;
 }
 
 .table button:first-of-type {

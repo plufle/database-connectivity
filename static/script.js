@@ -66,3 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadStudents();
 });
+
+document.getElementById("refresh-btn").addEventListener("click", () => {
+  loadStudents();
+});
