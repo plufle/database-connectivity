@@ -2,11 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("student-form");
   const tableBody = document.querySelector("#student-table tbody");
 
-  function loadStudents() {
-    // Add timestamp to force fresh request
+  function loadStudents(gradeFilter = "") {
     fetch(`/students?ts=${Date.now()}`)
       .then((res) => res.json())
       .then((data) => {
+        if (gradeFilter) {
+          data = data.filter((student) => student.grade === gradeFilter);
+        }
+
         tableBody.innerHTML = "";
         data.forEach((student) => {
           const row = document.createElement("tr");
@@ -37,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({ name, age, grade }),
     }).then(() => {
       form.reset();
-      loadStudents();
+      loadStudents("");
     });
   });
 
@@ -56,17 +59,26 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, age, grade }),
-    }).then(loadStudents);
+    }).then(() => {
+      loadStudents(document.getElementById("filter-grade").value);
+    });
   };
 
   window.deleteStudent = (id) => {
     fetch(`/students/${id}`, {
       method: "DELETE",
-    }).then(loadStudents);
+    }).then(() => {
+      loadStudents(document.getElementById("filter-grade").value);
+    });
   };
   document.getElementById("refresh-btn").addEventListener("click", () => {
-    loadStudents();
+    loadStudents(document.getElementById("filter-grade").value);
   });
 
-  loadStudents();
+  document.getElementById("filter-grade").addEventListener("change", (e) => {
+    const gradeFilter = e.target.value;
+    loadStudents(gradeFilter);
+  });
+
+  loadStudents("");
 });

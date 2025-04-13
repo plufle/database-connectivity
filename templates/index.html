@@ -33,14 +33,16 @@
         />
         <button type="submit" class="btn btn-primary">Add Student</button>
       </form>
-      <div style="display: flex; align-items: center; justify-content: center">
-        <button
-          id="refresh-btn"
-          class="btn btn-primary"
-          style="margin: 0 auto; margin-bottom: 2rem"
-        >
-          Refresh Table
-        </button>
+      <div class="utility">
+        <button id="refresh-btn" class="btn btn-primary">Refresh Table</button>
+        <select id="filter-grade" class="dropdown">
+          <option value="">All</option>
+          <option value="A">Grade A</option>
+          <option value="B">Grade B</option>
+          <option value="C">Grade C</option>
+          <option value="D">Grade D</option>
+          <option value="F">Grade F</option>
+        </select>
       </div>
 
       <div class="table-wrapper">
