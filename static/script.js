@@ -3,22 +3,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const tableBody = document.querySelector("#student-table tbody");
 
   function loadStudents() {
-    fetch("/students")
+    // Add timestamp to force fresh request
+    fetch(`/students?ts=${Date.now()}`)
       .then((res) => res.json())
       .then((data) => {
         tableBody.innerHTML = "";
         data.forEach((student) => {
           const row = document.createElement("tr");
           row.innerHTML = `
-              <td>${student.id}</td>
-              <td><input value="${student.name}" data-id="${student.id}" data-field="name"/></td>
-              <td><input value="${student.age}" data-id="${student.id}" data-field="age"/></td>
-              <td><input value="${student.grade}" data-id="${student.id}" data-field="grade"/></td>
-              <td>
-                <button onclick="updateStudent(${student.id})">Update</button>
-                <button onclick="deleteStudent(${student.id})" style="background-color:red;">Delete</button>
-              </td>
-            `;
+            <td>${student.id}</td>
+            <td><input value="${student.name}" data-id="${student.id}" data-field="name"/></td>
+            <td><input value="${student.age}" data-id="${student.id}" data-field="age"/></td>
+            <td><input value="${student.grade}" data-id="${student.id}" data-field="grade"/></td>
+            <td>
+              <button onclick="updateStudent(${student.id})">Update</button>
+              <button onclick="deleteStudent(${student.id})" style="background-color:red;">Delete</button>
+            </td>
+          `;
           tableBody.appendChild(row);
         });
       });
@@ -63,10 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "DELETE",
     }).then(loadStudents);
   };
+  document.getElementById("refresh-btn").addEventListener("click", () => {
+    loadStudents();
+  });
 
-  loadStudents();
-});
-
-document.getElementById("refresh-btn").addEventListener("click", () => {
   loadStudents();
 });

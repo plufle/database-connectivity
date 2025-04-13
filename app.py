@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, make_response
 import mysql.connector
 
 app = Flask(__name__)
 
-# Connect to MySQL
+
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -18,8 +18,24 @@ def index():
 
 @app.route("/students", methods=["GET"])
 def get_students():
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="plufle@123",
+        database="student_db"
+    )
+    cursor = conn.cursor(dictionary=True)
+
     cursor.execute("SELECT * FROM students")
-    return jsonify(cursor.fetchall())
+    data = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    response = make_response(jsonify(data))
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
 
 @app.route("/students", methods=["POST"])
 def add_student():
